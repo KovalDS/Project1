@@ -10,7 +10,6 @@ class UtilityMethods {
         if (firstDate.compareTo(secondDate) > 0) {
             throw new RuntimeException("Wrong date input"); //TODO My own exception??
         }
-        System.out.println(dateOfCreation.compareTo(firstDate) >= 0 && dateOfCreation.compareTo(secondDate) <= 0);
         return dateOfCreation.compareTo(firstDate) >= 0 && dateOfCreation.compareTo(secondDate) <= 0;
     }
 

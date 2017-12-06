@@ -14,8 +14,8 @@ import java.util.List;
 
 public class SlideShowModel {
     private List<Slide> slideShow;
+    private int currentSlide;
     private ImageDao imageDao;
-    private Iterator<Slide> slideShowIterator;
     private Comparator<Slide> comparator;
     private SearchStrategy searchStrategy;
 
@@ -39,34 +39,31 @@ public class SlideShowModel {
             }
         }
         slideShow = slides;
-        slideShowIterator = slides.iterator();
     }
 
-    public Image nextSlide() {
-        return slideShowIterator.next().showImage();
-    }
-
-    public boolean hasNextSlide() {
-        if (slideShowIterator.hasNext()) {
-            return true;
-        } else {
-            slideShowIterator = slideShow.iterator();
+    public boolean hasNext() {
+        if (currentSlide >= slideShow.size()) {
+            currentSlide = 0;
             return false;
+        } else {
+            return true;
         }
+    }
+
+    public Image next() {
+        return slideShow.get(currentSlide++).showImage();
     }
 
     public int getTotalSize() {
         int totalSize = 0;
-        while (slideShowIterator.hasNext()) {
-            totalSize += slideShowIterator.next().showImage().getSize();
+        while (this.hasNext()) {
+            totalSize += this.next().getSize();
         }
-        slideShowIterator = slideShow.iterator();
         return totalSize;
     }
 
     public void sortSlides() {
         slideShow.sort(comparator);
-        slideShowIterator = slideShow.iterator();
     }
 
     public List<Slide> findSlides() {
@@ -76,7 +73,6 @@ public class SlideShowModel {
 
     public void setSlideShow(List<Slide> slideShow) {
         this.slideShow = slideShow;
-        slideShowIterator = slideShow.iterator();
     }
 
     public void setSearchStrategy(SearchStrategy searchStrategy) {
@@ -85,5 +81,9 @@ public class SlideShowModel {
 
     public void setComparator(Comparator<Slide> comparator) {
         this.comparator = comparator;
+    }
+
+    public List<Slide> getSlideShow() {
+        return slideShow;
     }
 }

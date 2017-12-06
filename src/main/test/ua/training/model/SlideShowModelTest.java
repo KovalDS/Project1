@@ -58,14 +58,14 @@ public class SlideShowModelTest {
     @Test
     public void nextSlide() throws Exception {
         for (int i = 0; i < slides.size(); i ++){
-            assertEquals(slides.get(i).showImage(), slideShowModel.nextSlide());
+            assertEquals(slides.get(i).showImage(), slideShowModel.next());
         }
     }
 
     @Test
     public void hasNextSlide() throws Exception {
         for (int i = 0; i < slides.size(); i ++){
-            assertEquals(slides.iterator().hasNext(), slideShowModel.hasNextSlide());
+            assertEquals(slides.iterator().hasNext(), slideShowModel.hasNext());
         }
     }
 
