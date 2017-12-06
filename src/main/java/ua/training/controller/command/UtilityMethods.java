@@ -7,23 +7,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ShowSlideShowCommand implements Command {
-
-    @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+public class UtilityMethods {
+    static boolean checkPresentationIsCreated(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         SlideShowModel slideShowModel = (SlideShowModel) httpServletRequest.getAttribute("model");
-        try (PrintWriter out = httpServletResponse.getWriter();){
+
+        try (PrintWriter out = httpServletResponse.getWriter()){
             if (slideShowModel.getSlideShow() == null) {
                 out.print("<p>Please, create slide show first</p>");
-                return;
-            }
-            while (slideShowModel.hasNext()) {
-                out.print("<p>" + slideShowModel.next() + "</p>");
+                return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 }
