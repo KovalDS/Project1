@@ -15,18 +15,18 @@ import java.util.Map;
 public class CommandFactory {
     private final Map<String, Command> commands;
 
-    CommandFactory() {
+    private CommandFactory() {
         commands = new HashMap<>();
     }
 
-    public void addCommand(String name, Command command) {
+    private void addCommand(String name, Command command) {
         commands.put(name, command);
     }
 
     public void executeCommand(String name, HttpServletRequest httpServletRequest,
                                HttpServletResponse httpServletResponse) {
         commands.getOrDefault(name, (req, resp) ->
-                {throw new UnsupportedOperationException();}).execute(httpServletRequest, httpServletResponse);
+                {throw new UnsupportedOperationException(name);}).execute(httpServletRequest, httpServletResponse);
     }
 
     public static CommandFactory init() {
@@ -40,6 +40,10 @@ public class CommandFactory {
         commandFactory.addCommand("Sort by date", new SortByDateCommand());
         commandFactory.addCommand("Sort by size", new SortBySizeCommand());
         commandFactory.addCommand("Sort by tag", new SortByTagCommand());
+        commandFactory.addCommand("Get total size", new GetTotalSizeCommand());
+        commandFactory.addCommand("Next", new NextSlideCommand());
+        commandFactory.addCommand("Show slide by slide", new NextSlideCommand());
+
 
         return commandFactory;
     }

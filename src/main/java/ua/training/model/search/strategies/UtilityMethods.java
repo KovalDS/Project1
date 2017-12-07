@@ -4,18 +4,21 @@ import ua.training.model.entities.Tag;
 
 import java.time.LocalDate;
 
+import static ua.training.view.TextConstants.WRONG_DATE;
+import static ua.training.view.TextConstants.WRONG_SIZE;
+
 class UtilityMethods {
 
      static boolean isBetweenDate(LocalDate firstDate, LocalDate secondDate, LocalDate dateOfCreation) {
         if (firstDate.compareTo(secondDate) > 0) {
-            throw new RuntimeException("Wrong date input"); //TODO My own exception??
+            throw new RuntimeException(WRONG_DATE); //TODO My own exception??
         }
         return dateOfCreation.compareTo(firstDate) >= 0 && dateOfCreation.compareTo(secondDate) <= 0;
     }
 
     static boolean isBetweenSize(int lowerBound, int higherBound, int size) {
         if (lowerBound > higherBound) {
-            throw new RuntimeException("Wrong date input"); //TODO My own exception??
+            throw new RuntimeException(WRONG_SIZE); //TODO My own exception??
         }
         return size >= lowerBound && size <= higherBound;
     }

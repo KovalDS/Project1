@@ -1,24 +1,32 @@
 package ua.training.controller.command;
 
 import ua.training.model.SlideShowModel;
+import ua.training.model.entities.Slide;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
+
+import static ua.training.view.TextConstants.MODEL;
 
 public class UtilityMethods {
-    static boolean checkPresentationIsCreated(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        SlideShowModel slideShowModel = (SlideShowModel) httpServletRequest.getAttribute("model");
 
-        try (PrintWriter out = httpServletResponse.getWriter()){
-            if (slideShowModel.getSlideShow() == null) {
-                out.print("<p>Please, create slide show first</p>");
-                return false;
-            }
+    public static void findSlides(HttpServletRequest httpServletRequest) {
+        SlideShowModel slideShowModel = (SlideShowModel) httpServletRequest.getAttribute(MODEL);
+        List<Slide> slides = slideShowModel.findSlides();
+        slideShowModel.setSlideShow(slides);
+        httpServletRequest.setAttribute(MODEL, slideShowModel);
+    }
+
+    public static void forwardAndPrint(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        try {
+            httpServletRequest.getRequestDispatcher("index.jsp").forward(httpServletRequest, httpServletResponse);
+        } catch (ServletException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

@@ -2,6 +2,8 @@ package ua.training.model.entities;
 
 import java.time.LocalDate;
 
+import static ua.training.view.TextConstants.*;
+
 public class StaticImage implements Image {
     private int size;
     private Tag tag;
@@ -36,10 +38,10 @@ public class StaticImage implements Image {
 
     @Override
     public String toString() {
-        return "StaticImage{" +
-                "size=" + size +
-                ", tag=" + tag +
-                ", dateOfCreation=" + dateOfCreation +
+        return ANIMATED_IMAGE_TO_STRING + "{" +
+                SIZE + "= " + size + ", " +
+                TAG + "= " + tag + ", " +
+                DATE_OF_CREATEION + "= " + dateOfCreation +
                 '}';
     }
 

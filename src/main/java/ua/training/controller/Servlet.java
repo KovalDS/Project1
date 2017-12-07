@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import static ua.training.view.TextConstants.CREATE_ARRAY;
+import static ua.training.view.TextConstants.MODEL;
 
 public class Servlet extends HttpServlet {
-    CommandFactory commandFactory;
-    SlideShowModel slideShowModel;
+    private CommandFactory commandFactory;
+    private SlideShowModel slideShowModel;
 
     @Override
     public void init() throws ServletException {
@@ -24,7 +28,15 @@ public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         String command = httpServletRequest.getParameter("param");
-        httpServletRequest.setAttribute("model", slideShowModel);
-        commandFactory.executeCommand(command, httpServletRequest, httpServletResponse);
+        httpServletRequest.setAttribute(MODEL, slideShowModel);
+        PrintWriter out = httpServletResponse.getWriter();
+
+        try {
+            commandFactory.executeCommand(command, httpServletRequest, httpServletResponse);
+        } catch (NullPointerException e){
+            out.print(CREATE_ARRAY);
+        }
+
+        out.close();
     }
 }
