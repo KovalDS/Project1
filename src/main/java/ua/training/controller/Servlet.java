@@ -34,7 +34,7 @@ public class Servlet extends HttpServlet {
         try {
             commandFactory.executeCommand(command, httpServletRequest, httpServletResponse);
         } catch (NullPointerException e){
-            out.print(CREATE_ARRAY);
+            out.print("Please, create array first");
         }
 
         out.close();
