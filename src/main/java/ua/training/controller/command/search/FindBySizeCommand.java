@@ -3,7 +3,6 @@ package ua.training.controller.command.search;
 import ua.training.controller.command.Command;
 import ua.training.controller.command.ShowSlideShowCommand;
 import ua.training.controller.command.UtilityMethods;
-import ua.training.model.SlideShowModel;
 import ua.training.model.search.strategies.FindBetweenSize;
 
 import javax.servlet.http.HttpServletRequest;

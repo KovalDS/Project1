@@ -1,12 +1,16 @@
 package ua.training.model.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class AnimatedImage implements Image {
+    private  int id;
     private int size;
     private Tag tag;
     private LocalDate dateOfCreation;
     private int length;
+
+    private List<SlideShow> slideShows;
 
     @Override
     public int getSize() {
@@ -51,27 +55,5 @@ public class AnimatedImage implements Image {
                 ", dateOfCreation=" + dateOfCreation +
                 ", length=" + length +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AnimatedImage that = (AnimatedImage) o;
-
-        if (size != that.size) return false;
-        if (length != that.length) return false;
-        if (tag != that.tag) return false;
-        return dateOfCreation.equals(that.dateOfCreation);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = size;
-        result = 31 * result + tag.hashCode();
-        result = 31 * result + dateOfCreation.hashCode();
-        result = 31 * result + length;
-        return result;
     }
 }

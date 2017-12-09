@@ -1,7 +1,6 @@
 package ua.training.controller;
 
 import ua.training.controller.command.CommandFactory;
-import ua.training.model.SlideShowModel;
 import ua.training.model.dao.DaoFactory;
 
 import javax.servlet.ServletException;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static ua.training.view.TextConstants.CREATE_ARRAY;
 import static ua.training.view.TextConstants.MODEL;
 
 public class Servlet extends HttpServlet {

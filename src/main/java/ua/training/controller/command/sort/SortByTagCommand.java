@@ -2,7 +2,6 @@ package ua.training.controller.command.sort;
 
 import ua.training.controller.command.Command;
 import ua.training.controller.command.UtilityMethods;
-import ua.training.model.SlideShowModel;
 import ua.training.model.comparators.TagComparator;
 
 import javax.servlet.http.HttpServletRequest;

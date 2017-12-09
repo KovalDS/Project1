@@ -1,7 +1,5 @@
 package ua.training.controller.command;
 
-import ua.training.model.SlideShowModel;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
