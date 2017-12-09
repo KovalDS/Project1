@@ -7,17 +7,25 @@
 			<tr>
 				<th>Id</th>
 				<th>Name</th>
-				<thImages</th>
+				<th>Images</th>
 			</tr>
 			<c:forEach items = "${allPresentations}" var = "presentation">
                 <tr>
                     <td>${presentation.id}</td>
                     <td>${presentation.hash}</td>
                     <td>
-                        <c:forEach items = "${presentation.images}" var = "image">
-                            <div>${image.id}</div>
-                            <div>${image.hash}</div>
-                        </c:forEach>
+                        <table border = 1>
+                        	<tr>
+                        		<th>Image id</th>
+                        		<th>Image hash</th>
+                        	</tr>
+                            <c:forEach items = "${presentation.images}" var = "image">
+                                <tr>
+                                    <td>${image.id}</td>
+                                    <td>${image.hash}</td>
+                                </tr>
+                            </c:forEach>
+                        </table>
                     </td>
                 </tr>
 			</c:forEach>

@@ -1,12 +1,13 @@
 package ua.training.model.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SlideShow {
     private int id;
     private String name;
 
-    private List<Image> images;
+    private List<Image> images = new ArrayList<>();
 
     public int getId() {
         return id;

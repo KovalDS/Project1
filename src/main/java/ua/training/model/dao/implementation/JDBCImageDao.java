@@ -36,7 +36,7 @@ public class JDBCImageDao implements ImageDao {
         }
     }
 
-    private Image extractFormResultSet(ResultSet queryResult) throws SQLException {
+     static Image extractFormResultSet(ResultSet queryResult) throws SQLException {
         if (queryResult.getBoolean("is_static")) {
             StaticImage image = new StaticImage();
             image.setId(queryResult.getInt("idimage"));
