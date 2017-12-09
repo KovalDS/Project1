@@ -27,6 +27,26 @@ public class StaticImage implements Image {
         return dateOfCreation;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public int getLength() {
+        return 0;
+    }
+
+    @Override
+    public int getHash() {
+        return System.identityHashCode(this);
+    }
+
     public void setSize(int size) {
         this.size = size;
     }
@@ -39,9 +59,14 @@ public class StaticImage implements Image {
         this.dateOfCreation = dateOfCreation;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "StaticImage{" +
+                "getHash=" + System.identityHashCode(this) +
                 "size=" + size +
                 ", tag=" + tag +
                 ", dateOfCreation=" + dateOfCreation +

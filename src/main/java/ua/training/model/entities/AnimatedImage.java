@@ -27,8 +27,23 @@ public class AnimatedImage implements Image {
         return dateOfCreation;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String getType() {
+        return this.getClass().getSimpleName();
+    }
+
     public int getLength() {
         return length;
+    }
+
+    @Override
+    public int getHash() {
+        return System.identityHashCode(this);
     }
 
     public void setSize(int size) {
@@ -47,9 +62,14 @@ public class AnimatedImage implements Image {
         this.length = length;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "AnimatedImage{" +
+                "getHash=" + System.identityHashCode(this) +
                 "size=" + size +
                 ", tag=" + tag +
                 ", dateOfCreation=" + dateOfCreation +

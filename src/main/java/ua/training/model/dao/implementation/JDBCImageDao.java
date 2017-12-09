@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCImageDao implements ImageDao {
-    private static final String GET_ALL_IMAGES = "SELECT * FROM images";
+    private static final String GET_ALL_IMAGES = "SELECT * FROM image";
     private Connection connection;
 
     JDBCImageDao(Connection connection) {
@@ -32,19 +32,21 @@ public class JDBCImageDao implements ImageDao {
             }
             return images;
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
     private Image extractFormResultSet(ResultSet queryResult) throws SQLException {
         if (queryResult.getBoolean("is_static")) {
             StaticImage image = new StaticImage();
+            image.setId(queryResult.getInt("idimage"));
             image.setSize(queryResult.getInt("size"));
             image.setDateOfCreation(queryResult.getDate("date_of_creation").toLocalDate());
             image.setTag(Tag.valueOf(queryResult.getString("tag")));
             return image;
         } else {
             AnimatedImage image = new AnimatedImage();
+            image.setId(queryResult.getInt("idimage"));
             image.setSize(queryResult.getInt("size"));
             image.setDateOfCreation(queryResult.getDate("date_of_creation").toLocalDate());
             image.setTag(Tag.valueOf(queryResult.getString("tag")));

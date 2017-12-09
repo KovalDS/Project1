@@ -10,31 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static ua.training.view.TextConstants.MODEL;
-
 public class Servlet extends HttpServlet {
     private CommandFactory commandFactory;
-    private SlideShowModel slideShowModel;
 
     @Override
     public void init() throws ServletException {
         super.init();
         commandFactory = CommandFactory.init();
-        slideShowModel = new SlideShowModel(DaoFactory.getInstance().createImageDao());
     }
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        String command = httpServletRequest.getParameter("param");
-        httpServletRequest.setAttribute(MODEL, slideShowModel);
-        PrintWriter out = httpServletResponse.getWriter();
+        String page;
 
-        try {
-            commandFactory.executeCommand(command, httpServletRequest, httpServletResponse);
-        } catch (NullPointerException e){
-            out.print("Please, create array first");
-        }
-
-        out.close();
+        page = commandFactory.executeCommand(httpServletRequest, httpServletResponse);
+        httpServletRequest.getRequestDispatcher(page).forward(httpServletRequest, httpServletResponse);
     }
 }
