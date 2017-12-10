@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ShowAllPresentationsCommand implements Command {
-    SlideShowService slideShowService;
+    private SlideShowService slideShowService;
 
     public ShowAllPresentationsCommand(SlideShowService slideShowService) {
         this.slideShowService = slideShowService;

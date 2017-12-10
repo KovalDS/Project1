@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-public class ShowAllImages implements Command {
+public class ShowAllImagesCommand implements Command {
     private ImageService imageService;
 
-    public ShowAllImages(ImageService imageService) {
+    public ShowAllImagesCommand(ImageService imageService) {
         this.imageService = imageService;
     }
 

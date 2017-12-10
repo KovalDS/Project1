@@ -1,24 +1,40 @@
-//package ua.training.controller.command;
-//
-//import javax.servlet.ServletException;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.io.IOException;
-//
-//import static ua.training.view.TextConstants.MODEL;
-//
-//public class CreateSlideShowCommand implements Command {
-//    @Override
-//    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-//        SlideShowModel slideShowModel = (SlideShowModel) httpServletRequest.getAttribute(MODEL);
-//        slideShowModel.createSlideShow();
-//        httpServletRequest.setAttribute("message", "Slide show is created.");
-//        try {
-//            httpServletRequest.getRequestDispatcher("index.jsp").forward(httpServletRequest, httpServletResponse);
-//        } catch (ServletException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//}
+package ua.training.controller.command;
+
+import ua.training.model.entities.Image;
+import ua.training.model.service.ImageService;
+import ua.training.model.service.SlideShowService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
+public class CreateSlideShowCommand implements Command {
+    private SlideShowService slideShowService;
+    private ImageService imageService;
+    private ShowAllImagesCommand showAllImagesCommand;
+
+    public CreateSlideShowCommand(SlideShowService slideShowService, ImageService imageService) {
+        this.slideShowService = slideShowService;
+        this.imageService = imageService;
+    }
+
+    @Override
+    public String execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String page;
+
+        String[] imagesId  = httpServletRequest.getParameterValues("images");
+        String name = httpServletRequest.getParameter("presentation_name");
+        if (imagesId == null || name == null) {
+            httpServletRequest.setAttribute("message", "Please, select images and choose name of your slide show");
+            showAllImagesCommand = new ShowAllImagesCommand(imageService);
+            page = showAllImagesCommand.execute(httpServletRequest, httpServletResponse);
+            return page;
+        }
+        List<Image> images = imageService.findImagesWithId(imagesId);
+        slideShowService.createSlideShow(images, name);
+        httpServletRequest.setAttribute("message", "Slide show was created!");
+        page = "index.jsp";
+        return page;
+
+    }
+}

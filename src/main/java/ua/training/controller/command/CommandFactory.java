@@ -32,19 +32,19 @@ public class CommandFactory {
     public static CommandFactory init() {
         CommandFactory commandFactory = new CommandFactory();
 
-//        commandFactory.addCommand("Create Slide Show", new CreateSlideShowCommand());
-//        commandFactory.addCommand("Show Presentation", new ShowSlideShowCommand());
+        commandFactory.addCommand("Create slide show", new CreateSlideShowCommand(new SlideShowService(), new ImageService()));
+        commandFactory.addCommand("Show presentation", new ShowSlideShowCommand(new SlideShowService()));
 //        commandFactory.addCommand("Find by date", new FindByDateCommand());
 //        commandFactory.addCommand("Find by size", new FindBySizeCommand());
 //        commandFactory.addCommand("Find by tag", new FindByTagCommand());
 //        commandFactory.addCommand("Sort by date", new SortByDateCommand());
 //        commandFactory.addCommand("Sort by size", new SortBySizeCommand());
 //        commandFactory.addCommand("Sort by tag", new SortByTagCommand());
-//        commandFactory.addCommand("Get total size", new GetTotalSizeCommand());
-//        commandFactory.addCommand("Next", new NextSlideCommand());
-//        commandFactory.addCommand("Show slide by slide", new NextSlideCommand());
+        commandFactory.addCommand("Get total size", new GetTotalSizeCommand(new SlideShowService()));
+        commandFactory.addCommand("Next slide", new NextSlideCommand(new SlideShowService()));
+        commandFactory.addCommand("Show slide by slide", new NextSlideCommand(new SlideShowService()));
         commandFactory.addCommand("Show all presentations", new ShowAllPresentationsCommand(new SlideShowService()));
-        commandFactory.addCommand("Show all images", new ShowAllImages(new ImageService()));
+        commandFactory.addCommand("Show all images", new ShowAllImagesCommand(new ImageService()));
 
 
         return commandFactory;

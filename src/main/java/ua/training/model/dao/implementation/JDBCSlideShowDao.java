@@ -29,7 +29,7 @@ public class JDBCSlideShowDao implements SlideShowDao {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 SlideShow slideShow = extractFromResultSet(resultSet);
-                Image image = JDBCImageDao.extractFormResultSet(resultSet);
+                Image image = JDBCImageDao.extractFromResultSet(resultSet);
 
                 slideShow = makeUniqueSlideShow(slideShowMap, slideShow);
                 image = makeUniqueImage(imageMap, image);
@@ -45,11 +45,55 @@ public class JDBCSlideShowDao implements SlideShowDao {
 
     @Override
     public void addSlideShow(SlideShow slideShow) { //TODO
-        String query = "INSERT INTO slide_show (name) VALUES (?)";
+        String query1 = "INSERT INTO slide_show (name) VALUES (?)";
+        String query2 = "INSERT INTO image_has_slide_show (idimage, idslide_show) VALUES (?, ?)";
+        int slideShowId = 0;
+
+        List<Image> images = slideShow.getImages();
+
+        try (PreparedStatement insertSlideShow = connection.prepareStatement(query1, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement insertImage = connection.prepareStatement(query2)) {
+            insertSlideShow.setString(1, slideShow.getName());
+            insertSlideShow.executeUpdate();
+            ResultSet resultSet = insertSlideShow.getGeneratedKeys();
+            if (resultSet.next()) {
+                slideShowId = resultSet.getInt(1);
+            }
+            for (Image image : images) {
+                insertImage.setInt(1, image.getId());
+                insertImage.setInt(2, slideShowId);
+                insertImage.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public SlideShow findById(int id) {
+        String query = "SELECT * FROM slide_show " +
+                "LEFT JOIN image_has_slide_show " +
+                "USING(idslide_show) " +
+                "LEFT JOIN image " +
+                "USING (idimage)" +
+                "WHERE idslide_show = (?)";
+        SlideShow slideShow = new SlideShow();
+        Image image;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, slideShow.getName());
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            slideShow = extractFromResultSet(resultSet);
+            image = JDBCImageDao.extractFromResultSet(resultSet);
+            slideShow.getImages().add(image);
+
+            while (resultSet.next()) {
+                image = JDBCImageDao.extractFromResultSet(resultSet);
+                slideShow.getImages().add(image);
+            }
+            return slideShow;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -78,7 +122,7 @@ public class JDBCSlideShowDao implements SlideShowDao {
         SlideShow result = new SlideShow();
 
         result.setId(resultSet.getInt("idslide_show"));
-        result.setName("name");
+        result.setName(resultSet.getString("name"));
 
         return result;
     }
