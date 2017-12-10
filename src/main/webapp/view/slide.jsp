@@ -1,7 +1,7 @@
 <html>
     <body>
 		<form action = "slide_show" method = "GET">
-		    <h2>Presentation ${presentation.name}</h2>
+		    <h2>${presentation.name}</h2>
 		    <p>Slide #${current_slide}</p>
 		    <table border = "1">
                 <tr>

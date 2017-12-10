@@ -5,11 +5,20 @@
     <body>
         <div>${message}</div>
         <form action = "slide_show" method = "GET">
-            <input type = "checkbox" name = "sort" value = "Sort by size">
-            <input type = "checkbox" name = "sort" value = "Sort by date">
-            <input type = "checkbox" name = "sort" value = "Sort by tag">
+            <div>
+                <input type = "radio" name = "sort" value = "Sort by size" id = "size">
+                <label for = "size">Sort by size</label>
+            </div>
+            <div>
+                <input type = "radio" name = "sort" value = "Sort by date" id = "date">
+                <label for = "date">Sort by date</label>
+            </div>
+            <div>
+                <input type = "radio" name = "sort" value = "Sort by tag" id = "tag">
+                <label for = "tag">Sort by tag</label>
+            </div>
             <input type = "hidden" name = "param" value = "Show all images">
-            <input type = "submit">
+            <input type = "submit" value = "Sort">
         </form>
         <form action = "slide_show" method = "GET">
             <table border = "1">
