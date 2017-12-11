@@ -39,7 +39,7 @@ public class CommandFactory {
         commandFactory.addCommand("Next slide", new NextSlideCommand(new SlideShowService()));
         commandFactory.addCommand("Show slide by slide", new NextSlideCommand(new SlideShowService()));
         commandFactory.addCommand("Show all presentations", new ShowAllPresentationsCommand(new SlideShowService()));
-        commandFactory.addCommand("Show all images", new ShowAllImagesCommand(new ImageService()));
+        commandFactory.addCommand("Show all images", new ShowAllImagesCommand());
 
 
         return commandFactory;

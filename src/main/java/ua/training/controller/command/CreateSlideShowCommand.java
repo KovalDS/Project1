@@ -26,7 +26,7 @@ public class CreateSlideShowCommand implements Command {
         String name = httpServletRequest.getParameter("presentation_name");
         if (imagesId == null || name == null) {
             httpServletRequest.setAttribute("message", "Please, select images and choose name of your slide show");
-            showAllImagesCommand = new ShowAllImagesCommand(imageService);
+            showAllImagesCommand = new ShowAllImagesCommand();
             page = showAllImagesCommand.execute(httpServletRequest, httpServletResponse);
             return page;
         }

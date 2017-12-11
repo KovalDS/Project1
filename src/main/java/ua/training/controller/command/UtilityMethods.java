@@ -11,6 +11,7 @@ import ua.training.model.sort.strategy.TagComparator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 class UtilityMethods {
@@ -34,8 +35,12 @@ class UtilityMethods {
             LocalDate secondDate = LocalDate.parse(httpServletRequest.getParameter("second_date"));
             return imageService.findBetweenDate(firstDate, secondDate);
         } else if ("Find by tag".equals(findBy)) {
-            Tag tag = Tag.valueOf(httpServletRequest.getParameter("tag"));
-            return imageService.findByTag(tag);
+            try {
+                Tag tag = Tag.valueOf(httpServletRequest.getParameter("tag"));
+                return imageService.findByTag(tag);
+            } catch (IllegalArgumentException e) {
+                return new ArrayList<Image>();
+            }
         } else {
             return imageService.findAllImages();
         }
@@ -51,19 +56,27 @@ class UtilityMethods {
     static SlideShow findImagesInSlide(HttpServletRequest httpServletRequest) {
         String findBy = httpServletRequest.getParameter("search");
         String presentationIdStr = httpServletRequest.getParameter("presentation");
+        int presentationId = Integer.parseInt(presentationIdStr);
         SlideShowService slideShowService = new SlideShowService();
 
         if ("Find between size".equals(findBy)) {
             int minSize = Integer.parseInt(httpServletRequest.getParameter("lower_bound"));
             int maxSize = Integer.parseInt(httpServletRequest.getParameter("higher_bound"));
-            return slideShowService.getSlideShowImagesBetweenSize(Integer.parseInt(presentationIdStr), minSize, maxSize);
+            return slideShowService.getSlideShowImagesBetweenSize(presentationId, minSize, maxSize);
         } else if ("Find between date".equals(findBy)){
             LocalDate firstDate = LocalDate.parse(httpServletRequest.getParameter("first_date"));
             LocalDate secondDate = LocalDate.parse(httpServletRequest.getParameter("second_date"));
-            return slideShowService.getSlideShowImagesBetweenDate(Integer.parseInt(presentationIdStr), firstDate, secondDate);
+            return slideShowService.getSlideShowImagesBetweenDate(presentationId, firstDate, secondDate);
         } else if ("Find by tag".equals(findBy)) {
-            Tag tag = Tag.valueOf(httpServletRequest.getParameter("tag"));
-            return slideShowService.getSlideShowImagesByTag(Integer.parseInt(presentationIdStr), tag);
+            try {
+                Tag tag = Tag.valueOf(httpServletRequest.getParameter("tag"));
+                return slideShowService.getSlideShowImagesByTag(Integer.parseInt(presentationIdStr), tag);
+            } catch (IllegalArgumentException e) {
+                SlideShow slideShow = slideShowService.getSlideShow(presentationId);
+                slideShow.getImages().clear();
+                return slideShow;
+            }
+
         } else {
             return slideShowService.getSlideShow(Integer.parseInt(presentationIdStr));
         }

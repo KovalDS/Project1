@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ShowAllImagesCommand implements Command {
-    private ImageService imageService;
-
-    public ShowAllImagesCommand(ImageService imageService) {
-        this.imageService = imageService;
-    }
 
     @Override
     public String execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
