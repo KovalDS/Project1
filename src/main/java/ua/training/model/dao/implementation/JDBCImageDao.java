@@ -18,6 +18,7 @@ public class JDBCImageDao implements ImageDao {
     private static final String GET_BETWEEN_SIZE = "SELECT * FROM image WHERE image.size BETWEEN (?) AND (?)";
     private static final String GET_BETWEEN_DATE = "SELECT * FROM image WHERE image.date_of_creation BETWEEN (?) AND (?)";
     private static final String GET_BY_TAG = "SELECT * FROM image WHERE image.tag = (?)";
+
     private Connection connection;
 
     JDBCImageDao(Connection connection) {
