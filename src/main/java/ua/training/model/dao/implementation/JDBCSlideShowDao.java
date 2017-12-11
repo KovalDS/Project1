@@ -53,8 +53,10 @@ public class JDBCSlideShowDao implements SlideShowDao {
 
         List<Image> images = slideShow.getImages();
 
-        try (PreparedStatement insertSlideShow = connection.prepareStatement(INSERT_INTO_SLIDE_SHOW, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement insertSlideShow = connection.prepareStatement(INSERT_INTO_SLIDE_SHOW,
+                Statement.RETURN_GENERATED_KEYS);
                 PreparedStatement insertImage = connection.prepareStatement(INSERT_INTO_IMAGE_HAS_SLIDE_SHOW)) {
+
             insertSlideShow.setString(1, slideShow.getName());
             insertSlideShow.executeUpdate();
             ResultSet resultSet = insertSlideShow.getGeneratedKeys();
@@ -73,7 +75,7 @@ public class JDBCSlideShowDao implements SlideShowDao {
 
     @Override
     public SlideShow findById(int id) {
-        SlideShow slideShow = new SlideShow();
+        SlideShow slideShow;
         Image image;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID)) {
@@ -114,7 +116,7 @@ public class JDBCSlideShowDao implements SlideShowDao {
         }
     }
 
-    static SlideShow extractFromResultSet(ResultSet resultSet) throws SQLException {
+    private static SlideShow extractFromResultSet(ResultSet resultSet) throws SQLException {
         SlideShow result = new SlideShow();
 
         result.setId(resultSet.getInt("idslide_show"));
@@ -123,13 +125,13 @@ public class JDBCSlideShowDao implements SlideShowDao {
         return result;
     }
 
-    static SlideShow makeUniqueSlideShow(Map<Integer, SlideShow> slideShowMap, SlideShow slideShow) {
+    private static SlideShow makeUniqueSlideShow(Map<Integer, SlideShow> slideShowMap, SlideShow slideShow) {
         slideShowMap.putIfAbsent(slideShow.getId(), slideShow);
         return slideShowMap.get(slideShow.getId());
     }
 
 
-    static Image makeUniqueImage(Map<Integer, Image> imageMap, Image image) {
+    private static Image makeUniqueImage(Map<Integer, Image> imageMap, Image image) {
         imageMap.putIfAbsent(image.getId(), image);
         return imageMap.get(image.getId());
     }
