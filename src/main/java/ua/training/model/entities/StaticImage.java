@@ -1,7 +1,6 @@
 package ua.training.model.entities;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StaticImage implements Image {

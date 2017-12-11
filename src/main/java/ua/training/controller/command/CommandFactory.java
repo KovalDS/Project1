@@ -21,6 +21,7 @@ public class CommandFactory {
 
     public String executeCommand(HttpServletRequest httpServletRequest,
                                HttpServletResponse httpServletResponse) {
+
         String name = httpServletRequest.getParameter("param");
         String page;
 

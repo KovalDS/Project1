@@ -1,9 +1,7 @@
 package ua.training.model.dao.implementation;
 
 import ua.training.model.dao.ImageDao;
-import ua.training.model.entities.AnimatedImage;
 import ua.training.model.entities.Image;
-import ua.training.model.entities.StaticImage;
 import ua.training.model.entities.Tag;
 import ua.training.model.entities.builder.ImageBuilder;
 
