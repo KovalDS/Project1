@@ -82,7 +82,7 @@ public class SlideShowService {
 
     public int getTotalSize(int id) {
         SlideShow slideShow;
-        List<Image> images = new ArrayList<>();
+        List<Image> images;
         int totalSize = 0;
 
         SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
