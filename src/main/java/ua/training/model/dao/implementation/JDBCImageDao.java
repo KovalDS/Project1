@@ -5,6 +5,7 @@ import ua.training.model.entities.AnimatedImage;
 import ua.training.model.entities.Image;
 import ua.training.model.entities.StaticImage;
 import ua.training.model.entities.Tag;
+import ua.training.model.entities.builder.ImageBuilder;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -104,21 +105,22 @@ public class JDBCImageDao implements ImageDao {
     }
 
     static Image extractFromResultSet(ResultSet queryResult) throws SQLException {
+
         if (queryResult.getBoolean("is_static")) {
-            StaticImage image = new StaticImage();
-            image.setId(queryResult.getInt("idimage"));
-            image.setSize(queryResult.getInt("size"));
-            image.setDateOfCreation(queryResult.getDate("date_of_creation").toLocalDate());
-            image.setTag(Tag.valueOf(queryResult.getString("tag")));
-            return image;
+            return new ImageBuilder()
+                    .buildId(queryResult.getInt("idimage"))
+                    .buildSize(queryResult.getInt("size"))
+                    .buildDateOfCreation(queryResult.getDate("date_of_creation").toLocalDate())
+                    .buildTag(Tag.valueOf(queryResult.getString("tag")))
+                    .buildStaticImage();
         } else {
-            AnimatedImage image = new AnimatedImage();
-            image.setId(queryResult.getInt("idimage"));
-            image.setSize(queryResult.getInt("size"));
-            image.setDateOfCreation(queryResult.getDate("date_of_creation").toLocalDate());
-            image.setTag(Tag.valueOf(queryResult.getString("tag")));
-            image.setLength(queryResult.getInt("length"));
-            return image;
+            return new ImageBuilder()
+                    .buildId(queryResult.getInt("idimage"))
+                    .buildSize(queryResult.getInt("size"))
+                    .buildDateOfCreation(queryResult.getDate("date_of_creation").toLocalDate())
+                    .buildTag(Tag.valueOf(queryResult.getString("tag")))
+                    .buildlength(queryResult.getInt("length"))
+                    .buildAnimatedImage();
         }
     }
 

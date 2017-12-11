@@ -84,20 +84,11 @@ public class AnimatedImage implements Image {
 
         AnimatedImage that = (AnimatedImage) o;
 
-        if (id != that.id) return false;
-        if (size != that.size) return false;
-        if (length != that.length) return false;
-        if (tag != that.tag) return false;
-        return dateOfCreation.equals(that.dateOfCreation);
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + size;
-        result = 31 * result + tag.hashCode();
-        result = 31 * result + dateOfCreation.hashCode();
-        result = 31 * result + length;
-        return result;
+        return id;
     }
 }
