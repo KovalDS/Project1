@@ -1,6 +1,36 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
+    <head>
+        <title>Presentation</title>
+        <script>
+            function setDateRequired() {
+                document.getElementById("date_input1").required = true;
+                document.getElementById("date_input2").required = true;
+
+                document.getElementById("size_input1").required = false;
+                document.getElementById("size_input2").required = false;
+                document.getElementById("tag_input").required = false;
+            }
+            function setSizeRequired() {
+                document.getElementById("size_input1").required = true;
+                document.getElementById("size_input2").required = true;
+
+                document.getElementById("date_input1").required = false;
+                document.getElementById("date_input2").required = false;
+                document.getElementById("tag_input").required = false;
+            }
+            function setTagRequired() {
+                document.getElementById("tag_input").required = true;
+
+                document.getElementById("date_input1").required = false;
+                document.getElementById("date_input2").required = false;
+                document.getElementById("size_input1").required = false;
+                document.getElementById("size_input2").required = false;
+            }
+        </script>
+    </head>
+
     <body>
         <h2>${presentation.name}</h2>
             <form action = "slide_show" method = "GET">
@@ -20,21 +50,21 @@
                     <input type = "hidden" name = "param" value = "Show presentation">
                 </div>
                 <div>
-                    <input type = "radio" name = "search" value = "Find between size" id = "size">
+                    <input type = "radio" name = "search" value = "Find between size" id = "size" onclick = "setSizeRequired()">
                     <label for = "size">Find by size</label>
-                    <input type = "number" name = "lower_bound">
-                    <input type = "number" name = "higher_bound">
+                    <input type = "number" name = "lower_bound" id = "size_input1">
+                    <input type = "number" name = "higher_bound" id = "size_input2">
                 </div>
                 <div>
-                    <input type = "radio" name = "search" value = "Find between date" id = "date">
+                    <input type = "radio" name = "search" value = "Find between date" id = "date" onclick = "setDateRequired()">
                     <label for = "date">Find by date</label>
-                    <input type = "date" name = "first_date" >
-                    <input type = "date" name = "second_date" >
+                    <input type = "date" name = "first_date" id = "date_input1">
+                    <input type = "date" name = "second_date" id = "date_input2">
                 </div>
                 <div>
-                    <input type = "radio" name = "search" value = "Find by tag" id = "tag">
+                    <input type = "radio" name = "search" value = "Find by tag" id = "tag" onclick = "setTagRequired()">
                     <label for = "tag">Find by tag</label>
-                    <input type = "text" name = "tag" >
+                    <input type = "text" name = "tag" id = "tag_input">
                 </div>
                 <input type = "hidden" name = "param" value = "Show presentation">
                 <input type = "hidden" name = "presentation" value = "${presentation.id}">
