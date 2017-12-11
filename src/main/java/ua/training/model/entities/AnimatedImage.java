@@ -76,4 +76,28 @@ public class AnimatedImage implements Image {
                 ", length=" + length +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AnimatedImage that = (AnimatedImage) o;
+
+        if (id != that.id) return false;
+        if (size != that.size) return false;
+        if (length != that.length) return false;
+        if (tag != that.tag) return false;
+        return dateOfCreation.equals(that.dateOfCreation);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + size;
+        result = 31 * result + tag.hashCode();
+        result = 31 * result + dateOfCreation.hashCode();
+        result = 31 * result + length;
+        return result;
+    }
 }

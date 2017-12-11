@@ -3,23 +3,43 @@
 <html>
     <body>
         <h2>${presentation.name}</h2>
-        <form action = "slide_show" method = "GET">
-            <div>
-                <input type = "radio" name = "sort" value = "Sort by size" id = "size">
-                <label for = "size">Sort by size</label>
-            </div>
-            <div>
-                <input type = "radio" name = "sort" value = "Sort by date" id = "date">
-                <label for = "date">Sort by date</label>
-            </div>
-            <div>
-                <input type = "radio" name = "sort" value = "Sort by tag" id = "tag">
-                <label for = "tag">Sort by tag</label>
-            </div>
-            <input type = "hidden" name = "param" value = "Show presentation">
-            <input type = "hidden" name = "presentation" value = "${presentation.id}">
-            <input type = "submit" value = "Sort">
-        </form>
+            <form action = "slide_show" method = "GET">
+                <div style = "float : left">
+                    <div>
+                        <input type = "radio" name = "sort" value = "Sort by size" id = "size">
+                        <label for = "size">Sort by size</label>
+                    </div>
+                    <div>
+                        <input type = "radio" name = "sort" value = "Sort by date" id = "date">
+                        <label for = "date">Sort by date</label>
+                    </div>
+                    <div>
+                        <input type = "radio" name = "sort" value = "Sort by tag" id = "tag">
+                        <label for = "tag">Sort by tag</label>
+                    </div>
+                    <input type = "hidden" name = "param" value = "Show presentation">
+                </div>
+                <div>
+                    <input type = "radio" name = "search" value = "Find between size" id = "size">
+                    <label for = "size">Find by size</label>
+                    <input type = "number" name = "lower_bound">
+                    <input type = "number" name = "higher_bound">
+                </div>
+                <div>
+                    <input type = "radio" name = "search" value = "Find between date" id = "date">
+                    <label for = "date">Find by date</label>
+                    <input type = "date" name = "first_date" >
+                    <input type = "date" name = "second_date" >
+                </div>
+                <div>
+                    <input type = "radio" name = "search" value = "Find by tag" id = "tag">
+                    <label for = "tag">Find by tag</label>
+                    <input type = "text" name = "tag" >
+                </div>
+                <input type = "hidden" name = "param" value = "Show presentation">
+                <input type = "hidden" name = "presentation" value = "${presentation.id}">
+                <input type = "submit" value = "Submit">
+            </form>
         <form form action = "slide_show" method = "GET">
                 <table border = "1">
                     <tr>

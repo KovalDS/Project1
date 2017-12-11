@@ -7,12 +7,16 @@ import ua.training.model.entities.StaticImage;
 import ua.training.model.entities.Tag;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCImageDao implements ImageDao {
     private static final String GET_ALL_IMAGES = "SELECT * FROM image";
     private static final String GET_BY_ID = "SELECT * FROM image WHERE idimage = (?)";
+    private static final String GET_BETWEEN_SIZE = "SELECT * FROM image WHERE image.size BETWEEN (?) AND (?)";
+    private static final String GET_BETWEEN_DATE = "SELECT * FROM image WHERE image.date_of_creation BETWEEN (?) AND (?)";
+    private static final String GET_BY_TAG = "SELECT * FROM image WHERE image.tag = (?)";
     private Connection connection;
 
     JDBCImageDao(Connection connection) {
@@ -46,6 +50,59 @@ public class JDBCImageDao implements ImageDao {
         }
     }
 
+    @Override
+    public List<Image> getBetweenSize(int minSize, int maxSize) {
+        List<Image> images = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_BETWEEN_SIZE)) {
+            preparedStatement.setInt(1, minSize);
+            preparedStatement.setInt(2,maxSize);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Image image = extractFromResultSet(resultSet);
+                images.add(image);
+            }
+            return images;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Image> getBetweenDate(LocalDate firstDate, LocalDate secondDate) {
+        List<Image> images = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_BETWEEN_DATE)) {
+            preparedStatement.setDate(1, Date.valueOf(firstDate));
+            preparedStatement.setDate(2,Date.valueOf(secondDate));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Image image = extractFromResultSet(resultSet);
+                images.add(image);
+            }
+            return images;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Image> getByTag(Tag tag) {
+        List<Image> images = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_TAG)) {
+            preparedStatement.setString(1, tag.name());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Image image = extractFromResultSet(resultSet);
+                images.add(image);
+            }
+            return images;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     static Image extractFromResultSet(ResultSet queryResult) throws SQLException {
         if (queryResult.getBoolean("is_static")) {
             StaticImage image = new StaticImage();
@@ -63,21 +120,6 @@ public class JDBCImageDao implements ImageDao {
             image.setLength(queryResult.getInt("length"));
             return image;
         }
-    }
-
-    @Override
-    public List<Image> getImagesBeetwenDate() {
-        return null;
-    }
-
-    @Override
-    public List<Image> getImagesByTag() {
-        return null;
-    }
-
-    @Override
-    public List<Image> getImagesBeetwenSize() {
-        return null;
     }
 
     @Override

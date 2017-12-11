@@ -2,6 +2,7 @@ package ua.training.controller.command;
 
 import ua.training.model.entities.Image;
 import ua.training.model.entities.SlideShow;
+import ua.training.model.entities.Tag;
 import ua.training.model.service.SlideShowService;
 import ua.training.model.sort.strategy.DateComparator;
 import ua.training.model.sort.strategy.SizeComparator;
@@ -9,6 +10,7 @@ import ua.training.model.sort.strategy.TagComparator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ShowSlideShowCommand implements Command {
@@ -26,6 +28,7 @@ public class ShowSlideShowCommand implements Command {
         SlideShow slideShow;
 
         String sortType = httpServletRequest.getParameter("sort");
+        String findBy = httpServletRequest.getParameter("search");
 
         String presentationIdStr = httpServletRequest.getParameter("presentation");
         if (presentationIdStr == null) {
@@ -35,7 +38,22 @@ public class ShowSlideShowCommand implements Command {
             return page;
         }
 
-        slideShow = slideShowService.getSlideShow(Integer.parseInt(presentationIdStr));
+        if ("Find between size".equals(findBy)) {
+            int minSize = Integer.parseInt(httpServletRequest.getParameter("lower_bound"));
+            int maxSize = Integer.parseInt(httpServletRequest.getParameter("higher_bound"));
+            slideShow = slideShowService.getSlideShowImagesBetweenSize(Integer.parseInt(presentationIdStr), minSize, maxSize);
+        } else if ("Find between date".equals(findBy)){
+            LocalDate firstDate = LocalDate.parse(httpServletRequest.getParameter("first_date"));
+            LocalDate secondDate = LocalDate.parse(httpServletRequest.getParameter("second_date"));
+            slideShow = slideShowService.getSlideShowImagesBetweenDate(Integer.parseInt(presentationIdStr), firstDate, secondDate);
+        } else if ("Find by tag".equals(findBy)) {
+            Tag tag = Tag.valueOf(httpServletRequest.getParameter("tag"));
+            slideShow = slideShowService.getSlideShowImagesByTag(Integer.parseInt(presentationIdStr), tag);
+        } else {
+            slideShow = slideShowService.getSlideShow(Integer.parseInt(presentationIdStr));
+        }
+
+
         images = slideShow.getImages();
         if ("Sort by size".equals(sortType)) {
             images.sort(new SizeComparator());
