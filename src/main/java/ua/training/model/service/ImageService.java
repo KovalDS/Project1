@@ -15,7 +15,7 @@ public class ImageService {
         return imageDao.getAllImages();
     }
 
-    public List<Image> findImagesWithId(String[] idArray) { //TODO typecast should be performed in controller?
+    public List<Image> findImagesWithId(String[] idArray) { //TODO typecast should be performed in controller
         List<Image> images = new ArrayList<>();
 
         ImageDao imageDao = DaoFactory.getInstance().createImageDao();
