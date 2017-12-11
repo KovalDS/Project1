@@ -10,6 +10,7 @@ import ua.training.model.sort.strategy.SizeComparator;
 import ua.training.model.sort.strategy.TagComparator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,14 +92,21 @@ class UtilityMethods {
      */
     static List<Image> sortImages(HttpServletRequest httpServletRequest, List<Image> images) {
         String sortType = httpServletRequest.getParameter("sort");
+        ImageService imageService = new ImageService();
 
         if ("Sort by size".equals(sortType)) {
-            images.sort(new SizeComparator());
+            return imageService.sortImages(images, new SizeComparator());
         } else if ("Sort by date".equals(sortType)) {
-            images.sort(new DateComparator());
+            return imageService.sortImages(images, new DateComparator());
         } else if ("Sort by tag".equals(sortType)) {
-            images.sort(new TagComparator());
+            return imageService.sortImages(images, new TagComparator());
         }
         return images;
+    }
+
+    static String getAllSlidesPage(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        httpServletRequest.setAttribute("message", "Please, select presentation");
+        ShowAllPresentationsCommand showAllPresentationsCommand = new ShowAllPresentationsCommand(new SlideShowService());
+        return showAllPresentationsCommand.execute(httpServletRequest, httpServletResponse);
     }
 }

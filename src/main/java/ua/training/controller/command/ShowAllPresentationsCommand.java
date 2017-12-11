@@ -10,7 +10,7 @@ import java.util.List;
 public class ShowAllPresentationsCommand implements Command {
     private SlideShowService slideShowService;
 
-    public ShowAllPresentationsCommand(SlideShowService slideShowService) {
+    ShowAllPresentationsCommand(SlideShowService slideShowService) {
         this.slideShowService = slideShowService;
     }
 

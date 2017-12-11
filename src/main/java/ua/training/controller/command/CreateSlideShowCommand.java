@@ -13,7 +13,7 @@ public class CreateSlideShowCommand implements Command {
     private ImageService imageService;
     private ShowAllImagesCommand showAllImagesCommand;
 
-    public CreateSlideShowCommand(SlideShowService slideShowService, ImageService imageService) {
+    CreateSlideShowCommand(SlideShowService slideShowService, ImageService imageService) {
         this.slideShowService = slideShowService;
         this.imageService = imageService;
     }
@@ -24,12 +24,14 @@ public class CreateSlideShowCommand implements Command {
 
         String[] imagesId  = httpServletRequest.getParameterValues("images");
         String name = httpServletRequest.getParameter("presentation_name");
+
         if (imagesId == null || name == null) {
             httpServletRequest.setAttribute("message", "Please, select images and choose name of your slide show");
             showAllImagesCommand = new ShowAllImagesCommand();
             page = showAllImagesCommand.execute(httpServletRequest, httpServletResponse);
             return page;
         }
+
         List<Image> images = imageService.findImagesWithId(imagesId);
         slideShowService.createSlideShow(images, name);
         httpServletRequest.setAttribute("message", "Slide show was created!");

@@ -7,6 +7,7 @@ import ua.training.model.entities.Tag;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ImageService {
@@ -39,5 +40,10 @@ public class ImageService {
     public List<Image> findByTag(Tag tag) {
         ImageDao imageDao = DaoFactory.getInstance().createImageDao();
         return imageDao.getByTag(tag);
+    }
+
+    public List<Image> sortImages(List<Image> images, Comparator<Image> comparator) {
+        images.sort(comparator);
+        return images;
     }
 }

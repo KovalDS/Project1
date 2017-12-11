@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GetTotalSizeCommand implements Command {
     private SlideShowService slideShowService;
 
-    public GetTotalSizeCommand(SlideShowService slideShowService) {
+    GetTotalSizeCommand(SlideShowService slideShowService) {
         this.slideShowService = slideShowService;
     }
 
@@ -19,7 +19,7 @@ public class GetTotalSizeCommand implements Command {
         int presentationId = Integer.parseInt(httpServletRequest.getParameter("presentation"));
         int totalSize = slideShowService.getTotalSize(presentationId);
         httpServletRequest.setAttribute("message", "Total size is " + totalSize);
-        ShowSlideShowCommand showSlideShowCommand = new ShowSlideShowCommand(slideShowService);
+        ShowSlideShowCommand showSlideShowCommand = new ShowSlideShowCommand();
         showSlideShowCommand.execute(httpServletRequest, httpServletResponse);
         return page;
 

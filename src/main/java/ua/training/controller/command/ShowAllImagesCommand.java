@@ -1,10 +1,6 @@
 package ua.training.controller.command;
 
 import ua.training.model.entities.Image;
-import ua.training.model.service.ImageService;
-import ua.training.model.sort.strategy.DateComparator;
-import ua.training.model.sort.strategy.SizeComparator;
-import ua.training.model.sort.strategy.TagComparator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

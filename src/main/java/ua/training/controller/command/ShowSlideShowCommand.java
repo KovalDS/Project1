@@ -14,12 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ShowSlideShowCommand implements Command {
-    private SlideShowService slideShowService;
-    private ShowAllPresentationsCommand showAllPresentationsCommand;
-
-    public ShowSlideShowCommand(SlideShowService slideShowService) {
-        this.slideShowService = slideShowService;
-    }
 
     @Override
     public String execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
@@ -27,13 +21,9 @@ public class ShowSlideShowCommand implements Command {
         List<Image> images;
         SlideShow slideShow;
 
-
         String presentationIdStr = httpServletRequest.getParameter("presentation");
         if (presentationIdStr == null) {
-            httpServletRequest.setAttribute("message", "Please, select presentation");
-            showAllPresentationsCommand = new ShowAllPresentationsCommand(slideShowService);
-            page = showAllPresentationsCommand.execute(httpServletRequest, httpServletResponse);
-            return page;
+            return UtilityMethods.getAllSlidesPage(httpServletRequest, httpServletResponse);
         }
 
         slideShow = UtilityMethods.findImagesInSlide(httpServletRequest);
