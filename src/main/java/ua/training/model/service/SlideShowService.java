@@ -8,7 +8,6 @@ import ua.training.model.entities.SlideShow;
 import ua.training.model.entities.Tag;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,75 +22,67 @@ public class SlideShowService {
     }
 
     public List<SlideShow> getAllSlideShows() {
-        List<SlideShow> slideShows;
-
         SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
-        slideShows = slideShowDao.getAllSlideShows();
-        return slideShows;
+        return slideShowDao.getAllSlideShows();
     }
 
     public SlideShow getSlideShow(int id) {
-        SlideShow slideShow = new SlideShow();
-
-        SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
-        slideShow = slideShowDao.findById(id);
-        return slideShow;
+        return getSlideShowById(id);
     }
 
     public SlideShow getSlideShowImagesBetweenSize(int id, int minSize, int maxSize) {
-        SlideShow slideShow = new SlideShow();
+        SlideShow slideShow = getSlideShowById(id);
 
-        SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
         ImageDao imageDao = DaoFactory.getInstance().createImageDao();
-        slideShow = slideShowDao.findById(id);
         List<Image> images = imageDao.getBetweenSize(minSize, maxSize);
-        images = slideShow.getImages().stream()
-                .filter(images::contains)
-                .collect(Collectors.toList());
+
+        images = getIntersection(slideShow.getImages(), images);
         slideShow.setImages(images);
         return slideShow;
     }
 
     public SlideShow getSlideShowImagesBetweenDate(int id, LocalDate firstDate, LocalDate secondDate) {
-        SlideShow slideShow = new SlideShow();
+        SlideShow slideShow = getSlideShowById(id);
 
-        SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
         ImageDao imageDao = DaoFactory.getInstance().createImageDao();
-        slideShow = slideShowDao.findById(id);
         List<Image> images = imageDao.getBetweenDate(firstDate, secondDate);
-        images = slideShow.getImages().stream()
-                .filter(images::contains)
-                .collect(Collectors.toList());
+
+        images = getIntersection(slideShow.getImages(), images);
         slideShow.setImages(images);
         return slideShow;
     }
 
     public SlideShow getSlideShowImagesByTag(int id, Tag tag) {
-        SlideShow slideShow = new SlideShow();
+        SlideShow slideShow = getSlideShowById(id);
 
-        SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
         ImageDao imageDao = DaoFactory.getInstance().createImageDao();
-        slideShow = slideShowDao.findById(id);
         List<Image> images = imageDao.getByTag(tag);
-        images = slideShow.getImages().stream()
-                .filter(images::contains)
-                .collect(Collectors.toList());
+
+        images = getIntersection(slideShow.getImages(), images);
         slideShow.setImages(images);
         return slideShow;
     }
 
     public int getTotalSize(int id) {
-        SlideShow slideShow;
-        List<Image> images = new ArrayList<>();
+        SlideShow slideShow = getSlideShowById(id);
+        List<Image> images;
         int totalSize = 0;
-
-        SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
-        slideShow = slideShowDao.findById(id);
 
         images = slideShow.getImages();
         for (Image image : images) {
             totalSize += image.getSize();
         }
         return totalSize;
+    }
+
+    private SlideShow getSlideShowById(int id) {
+        SlideShowDao slideShowDao = DaoFactory.getInstance().createSlideShowDao();
+        return slideShowDao.findById(id);
+    }
+
+    private List<Image> getIntersection(List<Image> list1, List<Image> list2) {
+        return list1.stream()
+                .filter(list2::contains)
+                .collect(Collectors.toList());
     }
 }

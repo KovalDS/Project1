@@ -1,7 +1,6 @@
 package ua.training.model.entities;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StaticImage implements Image {
@@ -80,18 +79,11 @@ public class StaticImage implements Image {
 
         StaticImage that = (StaticImage) o;
 
-        if (id != that.id) return false;
-        if (size != that.size) return false;
-        if (tag != that.tag) return false;
-        return dateOfCreation.equals(that.dateOfCreation);
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + size;
-        result = 31 * result + tag.hashCode();
-        result = 31 * result + dateOfCreation.hashCode();
-        return result;
+        return id;
     }
 }

@@ -7,38 +7,50 @@ import ua.training.model.service.SlideShowService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static ua.training.controller.text.AttributeNames.CURRENT_SLIDE_ATTRIBUTE;
+import static ua.training.controller.text.AttributeNames.IMAGE_ATTRIBUTE;
+import static ua.training.controller.text.AttributeNames.PRESENTATION_ATTRIBUTE;
+import static ua.training.controller.text.PageNames.HOME_PAGE;
+import static ua.training.controller.text.PageNames.SLIDE_PAGE;
+
 public class NextSlideCommand implements Command {
     private SlideShowService slideShowService;
 
-    public NextSlideCommand(SlideShowService slideShowService) {
+    NextSlideCommand(SlideShowService slideShowService) {
         this.slideShowService = slideShowService;
     }
 
     @Override
     public String execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        String page;
         int currentSlide;
-        int presentationId = Integer.parseInt(httpServletRequest.getParameter("presentation"));
+        String presentationIdStr = httpServletRequest.getParameter(PRESENTATION_ATTRIBUTE);
         SlideShow slideShow;
         Image image;
 
-        String currentSlideStr = httpServletRequest.getParameter("current_slide");
+        if (presentationIdStr == null) {
+            return UtilityMethods.getAllSlidesPage(httpServletRequest, httpServletResponse);
+        }
+
+        int presentationId = Integer.parseInt(presentationIdStr);
+        String currentSlideStr = httpServletRequest.getParameter(CURRENT_SLIDE_ATTRIBUTE);
+
         if (currentSlideStr == null) {
             currentSlide = 0;
         } else {
             currentSlide = Integer.parseInt(currentSlideStr);
         }
+
         slideShow = slideShowService.getSlideShow(presentationId);
+
         if (currentSlide >= slideShow.getImages().size()) {
-            page = "index.jsp";
-            return page;
+            return HOME_PAGE;
         }
+
         image = slideShow.getImages().get(currentSlide);
         currentSlide++;
-        httpServletRequest.setAttribute("image", image);
-        httpServletRequest.setAttribute("presentation", slideShow);
-        httpServletRequest.setAttribute("current_slide", currentSlide);
-        page = "view/slide.jsp";
-        return page;
+        httpServletRequest.setAttribute(IMAGE_ATTRIBUTE, image);
+        httpServletRequest.setAttribute(PRESENTATION_ATTRIBUTE, slideShow);
+        httpServletRequest.setAttribute(CURRENT_SLIDE_ATTRIBUTE, currentSlide);
+        return SLIDE_PAGE;
     }
 }

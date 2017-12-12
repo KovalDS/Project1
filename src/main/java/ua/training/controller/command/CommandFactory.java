@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ua.training.controller.text.CommandNames.*;
+
 public class CommandFactory {
     private final Map<String, Command> commands;
 
@@ -21,6 +23,7 @@ public class CommandFactory {
 
     public String executeCommand(HttpServletRequest httpServletRequest,
                                HttpServletResponse httpServletResponse) {
+
         String name = httpServletRequest.getParameter("param");
         String page;
 
@@ -32,14 +35,13 @@ public class CommandFactory {
     public static CommandFactory init() {
         CommandFactory commandFactory = new CommandFactory();
 
-        commandFactory.addCommand("Create slide show", new CreateSlideShowCommand(new SlideShowService(), new ImageService()));
-        commandFactory.addCommand("Show presentation", new ShowSlideShowCommand(new SlideShowService()));
-        commandFactory.addCommand("Get total size", new GetTotalSizeCommand(new SlideShowService()));
-        commandFactory.addCommand("Next slide", new NextSlideCommand(new SlideShowService()));
-        commandFactory.addCommand("Show slide by slide", new NextSlideCommand(new SlideShowService()));
-        commandFactory.addCommand("Show all presentations", new ShowAllPresentationsCommand(new SlideShowService()));
-        commandFactory.addCommand("Show all images", new ShowAllImagesCommand(new ImageService()));
-
+        commandFactory.addCommand(CREATE_SLIDE_SHOW_COMMAND, new CreateSlideShowCommand(new SlideShowService(), new ImageService()));
+        commandFactory.addCommand(SHOW_PRESENTATION_COMMAND, new ShowSlideShowCommand());
+        commandFactory.addCommand(GET_TOTAL_SIZE_COMMAND, new GetTotalSizeCommand(new SlideShowService()));
+        commandFactory.addCommand(NEXT_SLIDE_COMMAND, new NextSlideCommand(new SlideShowService()));
+        commandFactory.addCommand(SHOW_SLIDE_BY_SLIDE_COMMAND, new NextSlideCommand(new SlideShowService()));
+        commandFactory.addCommand(SHOW_ALL_PRESENTATIONS_COMMAND, new ShowAllPresentationsCommand(new SlideShowService()));
+        commandFactory.addCommand(SHOW_ALL_IMAGES_COMMAND, new ShowAllImagesCommand());
 
         return commandFactory;
     }

@@ -7,18 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+import static ua.training.controller.text.AttributeNames.ALL_PRESENTATIONS_ATTRIBUTE;
+import static ua.training.controller.text.PageNames.ALL_PRESENTATIONS_PAGE;
+
 public class ShowAllPresentationsCommand implements Command {
     private SlideShowService slideShowService;
 
-    public ShowAllPresentationsCommand(SlideShowService slideShowService) {
+    ShowAllPresentationsCommand(SlideShowService slideShowService) {
         this.slideShowService = slideShowService;
     }
 
     @Override
     public String execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        String page = "/view/presentations.jsp";
         List<SlideShow> slideShowList = slideShowService.getAllSlideShows();
-        httpServletRequest.setAttribute("allPresentations", slideShowList);
-        return page;
+        httpServletRequest.setAttribute(ALL_PRESENTATIONS_ATTRIBUTE, slideShowList);
+        return ALL_PRESENTATIONS_PAGE;
     }
 }
