@@ -48,7 +48,7 @@ public class JDBCSlideShowDao implements SlideShowDao {
     }
 
     @Override
-    public void addSlideShow(SlideShow slideShow) { //TODO
+    public void addSlideShow(SlideShow slideShow) { //TODO (Don't remember what is wrong here actually)
         int slideShowId = 0;
 
         List<Image> images = slideShow.getImages();

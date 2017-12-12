@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+import static ua.training.controller.text.AttributeNames.IMAGES_ATTRIBUTE;
+import static ua.training.controller.text.AttributeNames.MESSAGE_ATTRIBUTE;
+import static ua.training.controller.text.AttributeNames.PRESENTATION_NAME;
+import static ua.training.controller.text.PageNames.HOME_PAGE;
+
 public class CreateSlideShowCommand implements Command {
     private SlideShowService slideShowService;
     private ImageService imageService;
@@ -20,23 +25,19 @@ public class CreateSlideShowCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        String page;
-
-        String[] imagesId  = httpServletRequest.getParameterValues("images");
-        String name = httpServletRequest.getParameter("presentation_name");
+        String[] imagesId  = httpServletRequest.getParameterValues(IMAGES_ATTRIBUTE);
+        String name = httpServletRequest.getParameter(PRESENTATION_NAME);
 
         if (imagesId == null || name == null) {
-            httpServletRequest.setAttribute("message", "Please, select images and choose name of your slide show");
+            httpServletRequest.setAttribute(MESSAGE_ATTRIBUTE, "Please, select images and choose name of your slide show");
             showAllImagesCommand = new ShowAllImagesCommand();
-            page = showAllImagesCommand.execute(httpServletRequest, httpServletResponse);
-            return page;
+            return showAllImagesCommand.execute(httpServletRequest, httpServletResponse);
         }
 
         List<Image> images = imageService.findImagesWithId(imagesId);
         slideShowService.createSlideShow(images, name);
-        httpServletRequest.setAttribute("message", "Slide show was created!");
-        page = "index.jsp";
-        return page;
+        httpServletRequest.setAttribute(MESSAGE_ATTRIBUTE, "Slide show was created!");
+        return HOME_PAGE;
 
     }
 }
